@@ -63,7 +63,7 @@ export class RedisClientService implements ICachingService {
     );
   }
 
-  public async setNx<T>(key: string, value: T, ttl?: number) {
+  public async setNx<T>(key: string, value: T, ttl?: number): Promise<void> {
     try {
       const result = await this.redis.setnx(
         this._cacheKey(key),
@@ -72,7 +72,6 @@ export class RedisClientService implements ICachingService {
       if (result === 1 && ttl) {
         await this.setExpire(key, ttl);
       }
-      return result;
     } catch (error) {
       this._logger.error('ERROR WHEN SETNX', error.message);
       throw error;

@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
+    "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -25,14 +25,19 @@
       "@scarf/scarf",
       "@swc/core",
       "bcrypt"
+    ],
+    "ignoredBuiltDependencies": [
+      "msgpackr-extract"
     ]
   },
   "dependencies": {
     "@nest-lab/throttler-storage-redis": "^1.1.0",
+    "@nestjs/bullmq": "^11.0.2",
     "@nestjs/common": "^11.1.1",
     "@nestjs/config": "^4.0.2",
-    "@nestjs/core": "^11.1.1",
+    "@nestjs/core": "^11.1.3",
     "@nestjs/jwt": "^11.0.0",
+    "@nestjs/microservices": "^11.1.3",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.1.1",
     "@nestjs/swagger": "^11.2.0",
@@ -40,10 +45,13 @@
     "@nestjs/typeorm": "^11.0.0",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^6.0.0",
+    "bullmq": "^5.53.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "cloudinary": "^2.6.1",
     "express-http-context": "^2.0.1",
     "ioredis": "^5.6.1",
+    "kafkajs": "^2.2.4",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "mysql2": "^3.14.1",

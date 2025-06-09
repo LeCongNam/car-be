@@ -5,8 +5,8 @@ export const ROLE_CONSTANTS = {
     INACTIVE: false,
   },
   TYPE: {
-    admin: 'admin',
-    customer: 'customer',
-    merchant: 'merchant',
+    ADMIN: 'admin',
+    CUSTOMER: 'customer',
+    MERCHANT: 'merchant',
   },
 };

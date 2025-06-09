@@ -1,5 +1,5 @@
 // src/entities/user-device.entity.ts
-import { USER_DEVICE } from 'src/constants';
+import { USER_DEVICE_CONSTANTS } from 'src/constants';
 import {
   Column,
   Entity,
@@ -11,7 +11,7 @@ import {
 import { Device } from './device.entity';
 import { User } from './user.entity';
 
-@Entity(USER_DEVICE.MODEL_NAME)
+@Entity(USER_DEVICE_CONSTANTS.MODEL_NAME)
 @Index('user_device_idx', ['user', 'device'], { unique: true })
 export class UserDevice {
   @PrimaryGeneratedColumn()
