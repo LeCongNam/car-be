@@ -1,4 +1,5 @@
 import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
+import { BullModule } from '@nestjs/bullmq';
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
@@ -11,6 +12,7 @@ import { AppService } from './app.service';
 import { CoreModule } from './core/core.module';
 import { RedisModule } from './core/redis';
 import { RedisClientService } from './core/redis/redis.service';
+import { FileModule } from './domain/file/file.module';
 import { PermissionModule } from './domain/permission/permission.module';
 import { RoleModule } from './domain/role/role.module';
 import { UserRoleModule } from './domain/user-role/user-role.module';
@@ -24,12 +26,14 @@ import { RepositoryModule } from './repositories/repository.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     RedisModule.forRootAsync({
-      useFactory: () => ({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
         config: {
-          // url: process.env.REDIS_URL,
-          host: process.env.REDIS_HOST,
-          port: +process.env.REDIS_PORT!,
-          password: process.env.REDIS_PASSWORD,
+          // url: configService.get('REDIS_URL'),
+          host: configService.get('REDIS_HOST'),
+          port: +configService.get('REDIS_PORT')!,
+          password: configService.get('REDIS_PASSWORD'),
         },
       }),
     }),
@@ -74,14 +78,30 @@ import { RepositoryModule } from './repositories/repository.module';
         synchronize: true,
         autoLoadEntities: true,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        logging: ['query', 'error'],
+        // logging: ['query', 'error'],
       }),
       inject: [ConfigService],
+    }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        connection: {
+          host: configService.get('REDIS_HOST'),
+          port: +configService.get('REDIS_PORT')!,
+          password: configService.get('REDIS_PASSWORD'),
+        },
+        defaultJobOptions: {
+          attempts: 3,
+        },
+      }),
     }),
     RepositoryModule,
     UserModule,
     RoleModule,
     UserRoleModule,
+    CoreModule,
+    FileModule,
     PermissionModule,
     CoreModule,
   ],
@@ -96,15 +116,9 @@ export class AppModule {
   public configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(httpContext.middleware, RequestContextMiddleware)
-      .forRoutes('*')
+      .forRoutes({ path: '/api/*path', method: RequestMethod.ALL }) // ✅ đúng chuẩn v8
       .apply(LoggerMiddleware)
-      .exclude({
-        path: '/api/health',
-        method: RequestMethod.GET,
-      })
-      .forRoutes({
-        path: '*',
-        method: RequestMethod.ALL,
-      });
+      .exclude({ path: '/api/health', method: RequestMethod.GET })
+      .forRoutes({ path: '/api/*path', method: RequestMethod.ALL }); // ✅
   }
 }

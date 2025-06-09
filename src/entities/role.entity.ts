@@ -21,7 +21,7 @@ export class Role extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   @Unique(['name'])
   name: string;
 

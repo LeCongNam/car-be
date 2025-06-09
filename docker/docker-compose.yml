@@ -4,7 +4,7 @@ services:
     container_name: redis_auth
     environment:
       REDIS_PASSWORD: Abcd1234@
-    command: ['redis-server', '--requirepass', '${REDIS_PASSWORD}']
+    command: ['redis-server', '--requirepass', 'Abcd1234@']
     ports:
       - '6379:6379'
     volumes:

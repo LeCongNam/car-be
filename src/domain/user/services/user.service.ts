@@ -46,7 +46,7 @@ export class UserService {
     });
 
     const role = await this._roleRepo.findOneBy({
-      name: ROLE_CONSTANTS.TYPE.customer,
+      name: ROLE_CONSTANTS.TYPE.CUSTOMER,
       isActive: true,
     });
 
@@ -193,7 +193,6 @@ export class UserService {
     }
 
     const otp = generateSecureOTP(4);
-    console.log('🚀 ~ UserService ~ sendOtp ~ otp:', otp);
     await this._redisService.setEx(
       `otp:${payload.email}:${otp}`,
       {
