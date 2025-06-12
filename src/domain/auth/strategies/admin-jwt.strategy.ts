@@ -16,13 +16,13 @@ export class AdminJwtStrategy extends PassportStrategy(
     private _userRepo: UserRepository,
     private _configSrv: ConfigService,
   ) {
-    const jwtSecret = _configSrv.get<string>('JWT_SECRET');
+    const jwtSecret = _configSrv.get<string>('JWT_SECRET_ADMIN');
     if (!jwtSecret) {
       throw new Error('JWT_SECRET is not defined in the environment variables');
     }
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: true,
+      ignoreExpiration: false,
       secretOrKey: jwtSecret,
     });
   }

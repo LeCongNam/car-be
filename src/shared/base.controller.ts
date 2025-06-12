@@ -1,23 +1,21 @@
 import {
   Controller,
   HttpStatus,
-  UseFilters,
+  Inject,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
 import { Request } from 'express';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import { COMMON_CONSTANTS } from 'src/constants';
 import { User } from 'src/entities';
-import { HttpExceptionFilter } from './http-exception.filter';
-import { LoggerService } from './logger.service';
 
 @Controller()
 @UsePipes(new ValidationPipe({ transform: true }))
-@UseFilters(new HttpExceptionFilter())
 @SkipThrottle()
 export class BaseController {
-  private _logger = new LoggerService(BaseController.name);
+  @Inject() private readonly i18n: I18nService;
 
   constructor() {}
 
@@ -37,7 +35,10 @@ export class BaseController {
     return {
       data,
       total: total || null,
-      message,
+      message:
+        this.i18n.t(`message.$${message}`, {
+          lang: I18nContext.current()!.lang,
+        }) || message,
       statusCode,
       extraData,
     };

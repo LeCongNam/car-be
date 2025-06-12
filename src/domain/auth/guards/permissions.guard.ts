@@ -31,18 +31,21 @@ export class PermissionsAuthGuard extends AuthGuard([
     const request = context.switchToHttp().getRequest();
     const user = request.user;
     console.dir(user, { depth: null });
-    const userPermissions = user?.userRoles?.flatMap(
-      (role) => role.permissions,
-    );
-    console.log('User Permissions:', userPermissions);
+    const userPermissions = user?.userRoles?.flatMap((userRole) => {
+      return userRole?.role?.permissions || [];
+    });
 
     const hasPermission = permissions.every((permission) =>
       userPermissions?.includes(permission),
     );
 
     if (!hasPermission) {
+      console.log('---fb--');
+
       throw new ForbiddenException();
     }
+
+    console.log('-----past');
 
     return super.canActivate(context);
   }
