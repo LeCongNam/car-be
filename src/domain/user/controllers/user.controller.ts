@@ -6,15 +6,14 @@ import {
   Patch,
   Post,
   Req,
-  UseFilters,
   UseGuards,
 } from '@nestjs/common';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import { Request } from 'express';
 import { CustomerJwtAuthGuard } from 'src/domain/auth/guards/customer-auth.guard';
+import { PermissionsAuthGuard } from 'src/domain/auth/guards/permissions.guard';
 import { BaseController } from 'src/shared/base.controller';
 import { Public } from 'src/shared/base.decorators';
-import { HttpExceptionFilter } from 'src/shared/http-exception.filter';
 import { CreateUserDto, SignInDto } from '../dto/create-user.dto';
 import { ResetPasswordDto } from '../dto/reset-password.dto';
 import { SendOtpDto } from '../dto/send-otp.dto';
@@ -23,8 +22,7 @@ import { VerifyOtpDto } from '../dto/verify-otp.dto';
 import { UserService } from '../services/user.service';
 
 @Controller('users')
-@UseGuards(CustomerJwtAuthGuard)
-@UseFilters(new HttpExceptionFilter())
+@UseGuards(CustomerJwtAuthGuard, PermissionsAuthGuard)
 @Throttle({ options: { limit: 5, ttl: 60 * 30 } })
 export class UserController extends BaseController {
   constructor(private readonly _userService: UserService) {

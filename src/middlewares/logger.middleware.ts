@@ -1,5 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
+import * as _ from 'lodash';
 import { LoggerService } from 'src/shared/logger.service';
 
 @Injectable()
@@ -11,12 +12,24 @@ export class LoggerMiddleware implements NestMiddleware {
 
     this._logger.log(
       `${ipAddress} - [${request.method}] - ${request.url} - REQUEST HEADER -`,
-      request.headers,
+      this._hiddenSecretKey(request.headers),
     );
     this._logger.log(
       `${ipAddress} - [${request.method}] - ${request.url} - REQUEST BODY -`,
       request?.body,
     );
+
     next();
+  }
+
+  private _hiddenSecretKey(headers: Record<string, any>) {
+    const headerClone = _.cloneDeep(headers);
+    for (const key in headerClone) {
+      if (['authorization'].includes(key.toLowerCase())) {
+        headerClone[key] = '******';
+      }
+    }
+
+    return headerClone;
   }
 }

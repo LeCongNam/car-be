@@ -71,8 +71,6 @@ export class User extends BaseEntity {
   @AfterLoad()
   afterLoad() {
     if (this.userRoles?.length) {
-      console.log(this.userRoles);
-
       this.roles = this.userRoles?.map((ur) => ur?.role?.name) ?? [];
     }
   }

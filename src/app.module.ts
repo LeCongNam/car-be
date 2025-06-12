@@ -1,12 +1,24 @@
 import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
 import { BullModule } from '@nestjs/bullmq';
-import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as httpContext from 'express-http-context';
 import Redis from 'ioredis';
+import {
+  AcceptLanguageResolver,
+  HeaderResolver,
+  I18nModule,
+  QueryResolver,
+} from 'nestjs-i18n';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoreModule } from './core/core.module';
@@ -21,6 +33,7 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { RequestContextMiddleware } from './middlewares/request.middleware';
 import { ThrottlerBehindGuard } from './middlewares/throttler-behind.middleware';
 import { RepositoryModule } from './repositories/repository.module';
+import { HttpExceptionFilter } from './shared/http-exception.filter';
 
 @Module({
   imports: [
@@ -96,6 +109,21 @@ import { RepositoryModule } from './repositories/repository.module';
         },
       }),
     }),
+    I18nModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        fallbackLanguage: configService.getOrThrow('FALLBACK_LANGUAGE'),
+        loaderOptions: {
+          path: join(__dirname, '/i18n/'),
+          watch: true,
+        },
+      }),
+      resolvers: [
+        { use: QueryResolver, options: ['lang'] },
+        AcceptLanguageResolver,
+        new HeaderResolver(['x-lang']),
+      ],
+      inject: [ConfigService],
+    }),
     RepositoryModule,
     UserModule,
     RoleModule,
@@ -110,15 +138,19 @@ import { RepositoryModule } from './repositories/repository.module';
     AppService,
     RedisClientService,
     { provide: APP_GUARD, useClass: ThrottlerBehindGuard },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
   ],
 })
-export class AppModule {
+export class AppModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(httpContext.middleware, RequestContextMiddleware)
-      .forRoutes({ path: '/api/*path', method: RequestMethod.ALL }) // ✅ đúng chuẩn v8
+      .forRoutes({ path: '/*splat', method: RequestMethod.ALL })
       .apply(LoggerMiddleware)
-      .exclude({ path: '/api/health', method: RequestMethod.GET })
-      .forRoutes({ path: '/api/*path', method: RequestMethod.ALL }); // ✅
+      .exclude({ path: '/health', method: RequestMethod.GET })
+      .forRoutes({ path: '/*splat', method: RequestMethod.ALL });
   }
 }

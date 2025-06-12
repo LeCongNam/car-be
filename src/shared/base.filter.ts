@@ -5,9 +5,9 @@ import { IsNumber, IsObject, IsOptional } from 'class-validator';
 export class BaseFilter {
   constructor(data?: Partial<BaseFilter>) {
     if (data) {
-      const { page, limit, skip, ...filter } = data;
+      const { page = 0, limit = 10, skip = 0, ...filter } = data;
 
-      this.skip = skip ? skip - 1 : page! * limit!;
+      this.skip = skip ? skip - 1 : page * limit;
       this.limit = limit!;
 
       delete filter.filter;

@@ -6,8 +6,6 @@ import { IS_PUBLIC_KEY, JWT_CONSTANTS } from 'src/constants';
 @Injectable()
 export class AdminJwtAuthGuard extends AuthGuard([
   JWT_CONSTANTS.TYPE.ADMIN_JWT,
-  JWT_CONSTANTS.TYPE.CUSTOMER_JWT,
-  JWT_CONSTANTS.TYPE.MERCHANT_JWT,
 ]) {
   constructor(private reflector: Reflector) {
     super();
