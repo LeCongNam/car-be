@@ -1,7 +1,7 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { IS_PUBLIC_KEY, JWT_CONSTANTS } from 'src/constants';
+import { IS_PUBLIC_KEY, JWT_CONSTANTS } from '../../../constants';
 
 @Injectable()
 export class CustomerJwtAuthGuard extends AuthGuard(

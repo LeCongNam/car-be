@@ -7,18 +7,18 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
-import { ROLE_CONSTANTS, THROTTLER_CONSTANTS } from 'src/constants';
-import { RedisClientService } from 'src/core/redis/redis.service';
-import { AuthService } from 'src/domain/auth/auth.service';
-import { Role, User, UserDevice } from 'src/entities';
-import { generateSecureOTP } from 'src/helper';
-import { DeviceRepository } from 'src/repositories/device.repository';
-import { RoleRepository } from 'src/repositories/role.repository';
-import { TokenRepository } from 'src/repositories/token.repository';
-import { UserDeviceRepository } from 'src/repositories/user-device.repository';
-import { UserRoleRepository } from 'src/repositories/user-role.repository';
-import { UserRepository } from 'src/repositories/user.repository';
 import { v7 } from 'uuid';
+import { ROLE_CONSTANTS, THROTTLER_CONSTANTS } from '../../../constants';
+import { RedisClientService } from '../../../core/redis/redis.service';
+import { Role, User, UserDevice } from '../../../entities';
+import { generateSecureOTP } from '../../../helper';
+import { DeviceRepository } from '../../../repositories/device.repository';
+import { RoleRepository } from '../../../repositories/role.repository';
+import { TokenRepository } from '../../../repositories/token.repository';
+import { UserDeviceRepository } from '../../../repositories/user-device.repository';
+import { UserRoleRepository } from '../../../repositories/user-role.repository';
+import { UserRepository } from '../../../repositories/user.repository';
+import { AuthService, TokenPayload } from '../../auth/auth.service';
 import { CreateUserDto, SignInDto } from '../dto/create-user.dto';
 import { ResetPasswordDto } from '../dto/reset-password.dto';
 import { SendOtpDto } from '../dto/send-otp.dto';
@@ -95,9 +95,12 @@ export class UserService {
     }
 
     // Sinh token trước để dùng trong transaction
-    const token = this._authSvc.generateToken(new User(user).serialize(), {
-      isRefresh: true,
-    });
+    const token = this._authSvc.generateToken(
+      new User(user).serialize() as unknown as TokenPayload,
+      {
+        isRefresh: true,
+      },
+    );
 
     let isNewDevice = false;
     let userDevice: UserDevice;

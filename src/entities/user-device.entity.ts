@@ -1,5 +1,3 @@
-// src/entities/user-device.entity.ts
-import { USER_DEVICE_CONSTANTS } from 'src/constants';
 import {
   Column,
   Entity,
@@ -8,6 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { USER_DEVICE_CONSTANTS } from '../constants';
 import { Device } from './device.entity';
 import { User } from './user.entity';
 

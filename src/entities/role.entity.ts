@@ -1,5 +1,4 @@
 import { Exclude } from 'class-transformer';
-import { ROLE_CONSTANTS } from 'src/constants';
 import {
   BeforeInsert,
   Column,
@@ -7,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
+import { ROLE_CONSTANTS } from '../constants';
 import { BaseEntity } from './base.entity';
 import { EntityDecorator } from './entity.decorator';
 import { UserRole } from './user-role.entity';

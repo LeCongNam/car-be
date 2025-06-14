@@ -5,8 +5,8 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { JWT_CONSTANTS } from 'src/constants';
-import { PERMISSION_KEY } from 'src/shared/base.decorators';
+import { JWT_CONSTANTS } from '../../../constants';
+import { PERMISSION_KEY } from '../../../shared/base.decorators';
 
 @Injectable()
 export class PermissionsAuthGuard extends AuthGuard([

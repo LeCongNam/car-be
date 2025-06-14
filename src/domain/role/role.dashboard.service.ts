@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PERMISSION_CONSTANT, ROLE_CONSTANTS } from 'src/constants';
-import { Role } from 'src/entities';
-import { RoleRepository } from 'src/repositories/role.repository';
+import { PERMISSION_CONSTANT, ROLE_CONSTANTS } from '../../constants';
+import { Role } from '../../entities';
+import { RoleRepository } from '../../repositories/role.repository';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto, UpdateRolePermissionDto } from './dto/update-role.dto';
 

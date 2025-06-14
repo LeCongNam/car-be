@@ -7,11 +7,11 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { PERMISSION_CONSTANT } from 'src/constants';
-import { AdminJwtAuthGuard } from 'src/domain/auth/guards/admin-auth.guard';
-import { PermissionsAuthGuard } from 'src/domain/auth/guards/permissions.guard';
-import { BaseController } from 'src/shared/base.controller';
-import { Permissions } from 'src/shared/base.decorators';
+import { PERMISSION_CONSTANT } from '../../../constants';
+import { BaseController } from '../../../shared/base.controller';
+import { Permissions } from '../../../shared/base.decorators';
+import { AdminJwtAuthGuard } from '../../auth/guards/admin-auth.guard';
+import { PermissionsAuthGuard } from '../../auth/guards/permissions.guard';
 import { GetListDashboardDto } from '../dto/get-list.dashboard.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserDashboardService } from '../services/user.dashboard.service';

@@ -1,5 +1,5 @@
-import { TOKEN_CONSTANTS } from 'src/constants';
 import { Column, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { TOKEN_CONSTANTS } from '../constants';
 import { EntityDecorator } from './entity.decorator';
 import { UserDevice } from './user-device.entity'; // Assuming this entity exists
 

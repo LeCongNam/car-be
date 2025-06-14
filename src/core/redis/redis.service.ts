@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ChainableCommander, Redis } from 'ioredis';
-import { LoggerService } from 'src/shared/logger.service';
+import { LoggerService } from '../../shared/logger.service';
 import { CACHING_PREFIX } from './redis.constants';
 import { InjectRedis } from './redis.decorators';
 import { HincrbyPayload, ICachingService } from './redis.interfaces';

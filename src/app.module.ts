@@ -34,7 +34,6 @@ import { RequestContextMiddleware } from './middlewares/request.middleware';
 import { ThrottlerBehindGuard } from './middlewares/throttler-behind.middleware';
 import { RepositoryModule } from './repositories/repository.module';
 import { HttpExceptionFilter } from './shared/http-exception.filter';
-
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),

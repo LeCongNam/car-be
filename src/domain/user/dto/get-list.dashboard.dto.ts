@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsOptional, IsString } from 'class-validator';
-import { BaseFilter } from 'src/shared/base.filter';
+import { BaseFilter } from '../../../shared/base.filter';
 
 export class GetListDashboardDto extends BaseFilter {
   @ApiProperty({ example: 1, description: 'Role ID', required: false })

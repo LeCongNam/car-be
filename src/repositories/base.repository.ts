@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 
-import { BaseFilter } from 'src/shared/base.filter';
 import {
   DataSource,
   ObjectLiteral,
@@ -10,6 +9,7 @@ import {
   SelectQueryBuilder,
 } from 'typeorm';
 import { IsolationLevel } from 'typeorm/driver/types/IsolationLevel';
+import { BaseFilter } from '../shared/base.filter';
 
 class Filterable {
   public static buildQuery<T>(

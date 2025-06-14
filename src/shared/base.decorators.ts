@@ -1,6 +1,6 @@
 import { SetMetadata } from '@nestjs/common';
 import { Transform } from 'class-transformer';
-import { IS_PUBLIC_KEY } from 'src/constants';
+import { IS_PUBLIC_KEY } from '../constants';
 
 export const ArrayTransform = () => {
   return Transform(({ value }) => {

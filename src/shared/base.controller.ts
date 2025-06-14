@@ -8,8 +8,8 @@ import {
 import { SkipThrottle } from '@nestjs/throttler';
 import { Request } from 'express';
 import { I18nContext, I18nService } from 'nestjs-i18n';
-import { COMMON_CONSTANTS } from 'src/constants';
-import { User } from 'src/entities';
+import { COMMON_CONSTANTS } from '../constants';
+import { User } from '../entities';
 
 @Controller()
 @UsePipes(new ValidationPipe({ transform: true }))

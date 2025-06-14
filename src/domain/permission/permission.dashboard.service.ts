@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PERMISSION_CONSTANT } from 'src/constants';
+import { PERMISSION_CONSTANT } from '../../constants';
 
 @Injectable()
 export class PermissionDashboardService {

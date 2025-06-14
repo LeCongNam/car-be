@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { BaseController } from 'src/shared/base.controller';
+import { BaseController } from '../../shared/base.controller';
 import { PermissionDashboardService } from './permission.dashboard.service';
 
 @Controller('dashboard/permissions')

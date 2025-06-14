@@ -1,8 +1,8 @@
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import * as httpContext from 'express-http-context';
-import { COMMON_CONSTANTS } from 'src/constants';
 import { v4 as uuidv4 } from 'uuid';
+import { COMMON_CONSTANTS } from '../constants';
 
 @Injectable()
 export class RequestContextMiddleware implements NestMiddleware {

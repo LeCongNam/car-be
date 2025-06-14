@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import { Request } from 'express';
-import { CustomerJwtAuthGuard } from 'src/domain/auth/guards/customer-auth.guard';
-import { PermissionsAuthGuard } from 'src/domain/auth/guards/permissions.guard';
-import { BaseController } from 'src/shared/base.controller';
-import { Public } from 'src/shared/base.decorators';
+import { BaseController } from '../../../shared/base.controller';
+import { Public } from '../../../shared/base.decorators';
+import { CustomerJwtAuthGuard } from '../../auth/guards/customer-auth.guard';
+import { PermissionsAuthGuard } from '../../auth/guards/permissions.guard';
 import { CreateUserDto, SignInDto } from '../dto/create-user.dto';
 import { ResetPasswordDto } from '../dto/reset-password.dto';
 import { SendOtpDto } from '../dto/send-otp.dto';
