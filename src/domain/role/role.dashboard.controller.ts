@@ -9,7 +9,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { BaseController } from 'src/shared/base.controller';
+import { BaseController } from '../../shared/base.controller';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto, UpdateRolePermissionDto } from './dto/update-role.dto';
 import { RoleDashboardService } from './role.dashboard.service';

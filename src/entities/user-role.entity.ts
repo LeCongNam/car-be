@@ -1,4 +1,3 @@
-import { USER_ROLE_CONSTANTS } from 'src/constants/user-role.constant';
 import {
   Column,
   Index,
@@ -6,6 +5,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { USER_ROLE_CONSTANTS } from '../constants';
 import { BaseEntity } from './base.entity';
 import { EntityDecorator } from './entity.decorator';
 import { Role } from './role.entity';

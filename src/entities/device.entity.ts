@@ -1,5 +1,4 @@
 // src/entities/device.entity.ts
-import { DEVICE_CONSTANTS } from 'src/constants/device.constant';
 import {
   Column,
   Entity,
@@ -7,6 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { DEVICE_CONSTANTS } from '../constants';
 import { UserDevice } from './user-device.entity';
 
 @Entity(DEVICE_CONSTANTS.MODEL_NAME)

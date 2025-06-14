@@ -22,13 +22,13 @@ async function bootstrap() {
 
   app.enableCors();
   // app.set('trust proxy', true);
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
 
   // Start Kafka microservice
   await app.startAllMicroservices();
 
   // Start HTTP server
-  const PORT = process.env.PORT ?? 3000;
+  const PORT = process.env.PORT ?? 3001;
   await app.listen(PORT);
   Logger.log(`HTTP Server is running on port ${PORT}`);
 }

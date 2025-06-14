@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CloudinaryService } from 'src/core/cloudinary/cloudinary.service';
+import { CloudinaryService } from '../../core/cloudinary/cloudinary.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 

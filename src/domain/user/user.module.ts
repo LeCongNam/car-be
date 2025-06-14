@@ -1,7 +1,7 @@
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { RedisClientService } from 'src/core/redis/redis.service';
+import { RedisClientService } from '../../core/redis/redis.service';
 import { AuthModule } from '../auth/auth.module';
 import { UserController } from './controllers/user.controller';
 import { UserDashboardController } from './controllers/user.dashboard.controller';

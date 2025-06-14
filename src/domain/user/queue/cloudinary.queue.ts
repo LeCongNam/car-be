@@ -1,8 +1,8 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
-import { CloudinaryService } from 'src/core/cloudinary';
-import { UserRepository } from 'src/repositories/user.repository';
+import { CloudinaryService } from '../../../core/cloudinary';
+import { UserRepository } from '../../../repositories/user.repository';
 
 @Processor('cloudinary')
 @Injectable()

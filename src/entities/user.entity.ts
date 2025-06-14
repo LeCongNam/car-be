@@ -1,7 +1,6 @@
 import { genSalt, hash } from 'bcrypt';
 import { Exclude } from 'class-transformer';
-import _ from 'lodash-es';
-import { USER_CONSTANTS } from 'src/constants';
+import { omit } from 'lodash';
 import {
   AfterLoad,
   BeforeInsert,
@@ -10,6 +9,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { USER_CONSTANTS } from '../constants';
 import { BaseEntity } from './base.entity';
 import { EntityDecorator } from './entity.decorator';
 import { Role } from './role.entity';
@@ -57,7 +57,7 @@ export class User extends BaseEntity {
   referenceRoles?: Role[];
 
   serialize() {
-    return _.omit(this, ['password', 'isActive', 'createdAt', 'updatedAt']);
+    return omit(this, ['password', 'isActive', 'createdAt', 'updatedAt']);
   }
 
   @BeforeInsert()

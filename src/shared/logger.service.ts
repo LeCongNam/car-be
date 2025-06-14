@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import * as httpContext from 'express-http-context';
-import { COMMON_CONSTANTS } from 'src/constants';
+import { COMMON_CONSTANTS } from '../constants';
 
 type LOG_METHOD = 'log' | 'error' | 'warn' | 'debug';
 
