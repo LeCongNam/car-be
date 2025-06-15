@@ -3,6 +3,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Queue } from 'bullmq';
 import { plainToInstance } from 'class-transformer';
+import { In } from 'typeorm';
 import { RedisClientService } from '../../../core/redis/redis.service';
 import { User } from '../../../entities';
 import { DeviceRepository } from '../../../repositories/device.repository';
@@ -13,6 +14,7 @@ import { UserRoleRepository } from '../../../repositories/user-role.repository';
 import { UserRepository } from '../../../repositories/user.repository';
 import { BaseFilter } from '../../../shared/base.filter';
 import { AuthService } from '../../auth/auth.service';
+import { CreateUserDashboardDto } from '../dto/create-user.dashboard.dto';
 import { GetListDashboardDto } from '../dto/get-list.dashboard.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
@@ -40,13 +42,13 @@ export class UserDashboardService {
 
     const where: Record<string, any> = {};
 
-    if (roleId) {
-      where.userRoles = {
-        role: {
-          id: roleId,
-        },
-      };
-    }
+    // if (roleId) {
+    //   where.userRoles = {
+    //     role: {
+    //       id: roleId,
+    //     },
+    //   };
+    // }
 
     const [users, total] = await this._userRepo.findAndCount({
       relations: {
@@ -63,6 +65,10 @@ export class UserDashboardService {
       const userInstance = plainToInstance(User, user);
       return userInstance;
     });
+    console.log(
+      '🚀 ~ UserDashboardService ~ usersResponse ~ usersResponse:',
+      usersResponse,
+    );
 
     return [usersResponse, total];
   }
@@ -135,5 +141,54 @@ export class UserDashboardService {
     }
 
     return this._userRepo.save(user);
+  }
+
+  async create(createUserDto: CreateUserDashboardDto): Promise<User> {
+    const existingUser = await this._userRepo.findOneBy({
+      email: createUserDto.email,
+    });
+
+    if (existingUser) {
+      throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+    }
+
+    const user = this._userRepo.create(createUserDto);
+
+    // Handle roles if provided
+    if (createUserDto.roleIds && createUserDto.roleIds.length > 0) {
+      const roles = await this._roleRepo.find({
+        where: { id: In(createUserDto.roleIds) },
+      });
+
+      if (roles.length !== createUserDto.roleIds.length) {
+        throw new HttpException(
+          { message: 'One or more roles not found' },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      user.password = 'abcd1234';
+
+      user.userRoles = roles.map((role) =>
+        this._userRoleRepo.create({ user, role }),
+      );
+    }
+    let newUser: User;
+    await this._userRepo.executeTransaction(async (qr) => {
+      const promises: Promise<any>[] = [];
+      for (const userRole of user.userRoles) {
+        newUser = await this._userRepo.save(user);=-70=-
+        promises.push(
+          this._userRoleRepo.getRepository(qr).save({
+            role: userRole.role,
+            user: user,
+          }),
+        );
+      }
+
+      await Promise.all(promises);
+    });
+
+    return newUser!;
   }
 }

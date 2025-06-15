@@ -51,7 +51,7 @@ export class RoleDashboardService {
   findAll() {
     return this._roleRepo.findAndCount({
       where: {
-        isActive: true,
+        // isActive: true,
       },
     });
   }

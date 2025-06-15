@@ -90,7 +90,7 @@ import { HttpExceptionFilter } from './shared/http-exception.filter';
         synchronize: true,
         autoLoadEntities: true,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        // logging: ['query', 'error'],
+        logging: ['query', 'error'],
       }),
       inject: [ConfigService],
     }),

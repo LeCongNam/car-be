@@ -1,11 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import {
-  IsArray,
-  IsBoolean,
-  IsDateString,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { Exclude } from 'class-transformer';
+import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
 import { CreateUserDto } from './create-user.dto';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
@@ -24,20 +19,17 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     example: '2025-06-06T12:30:37.485Z',
     description: 'User creation date',
   })
-  @IsOptional()
-  @IsDateString()
+  @Exclude()
   createdAt?: string;
 
   @ApiProperty({
     example: '2025-06-09T14:31:24.000Z',
     description: 'User last update date',
   })
-  @IsOptional()
-  @IsDateString()
+  @Exclude()
   updatedAt?: string;
 
   @ApiProperty({ example: 'admin', description: 'User who updated the record' })
-  @IsOptional()
-  @IsString()
+  @Exclude()
   updatedBy?: string;
 }

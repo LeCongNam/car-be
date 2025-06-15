@@ -4,20 +4,19 @@ import {
   Get,
   Param,
   Patch,
+  Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { PERMISSION_CONSTANT } from '../../../constants';
 import { BaseController } from '../../../shared/base.controller';
 import { Permissions } from '../../../shared/base.decorators';
-import { AdminJwtAuthGuard } from '../../auth/guards/admin-auth.guard';
-import { PermissionsAuthGuard } from '../../auth/guards/permissions.guard';
+import { CreateUserDashboardDto } from '../dto/create-user.dashboard.dto';
 import { GetListDashboardDto } from '../dto/get-list.dashboard.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserDashboardService } from '../services/user.dashboard.service';
 
 @Controller('dashboard/users')
-@UseGuards(AdminJwtAuthGuard, PermissionsAuthGuard)
+// @UseGuards(AdminJwtAuthGuard, PermissionsAuthGuard)
 export class UserDashboardController extends BaseController {
   constructor(private readonly _userDBService: UserDashboardService) {
     super();
@@ -48,6 +47,13 @@ export class UserDashboardController extends BaseController {
   @Patch(':id')
   async update(@Param('id') id: string, @Body() body: UpdateUserDto) {
     const data = await this._userDBService.update(id, body);
+    return this.responseCustom(data);
+  }
+
+  @Post()
+  // @Permissions(PERMISSION_CONSTANT.ACTION.CREATE_USER)
+  async create(@Body() body: CreateUserDashboardDto) {
+    const data = await this._userDBService.create(body);
     return this.responseCustom(data);
   }
 }
