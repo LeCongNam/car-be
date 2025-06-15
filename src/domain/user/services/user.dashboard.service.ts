@@ -177,7 +177,7 @@ export class UserDashboardService {
     await this._userRepo.executeTransaction(async (qr) => {
       const promises: Promise<any>[] = [];
       for (const userRole of user.userRoles) {
-        newUser = await this._userRepo.save(user);=-70=-
+        newUser = await this._userRepo.save(user);
         promises.push(
           this._userRoleRepo.getRepository(qr).save({
             role: userRole.role,
